@@ -30,7 +30,7 @@ PLATFORM = HOST
 ifeq ($(PLATFORM),MSP432)
 	LINKER_FILE = ../msp432p401r.lds
 	CPU = cortex-m4
-	ARCH = amrv7e-m
+	ARCH = armv7e-m
 	SPECS = nosys.specs
 endif
 
@@ -61,18 +61,18 @@ endif
 	objdump -S $@
 
 
-.PHONY : build
-	build : c1m2.out
-		cim2.out : %(SOURCES)
-			$(CC) $(SOURCES) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o c1m2.out
-			size c1m2.out
+.PHONY: build
+build : c1m2.out
+c1m2.out : $(SOURCES)
+	$(CC) $(SOURCES) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o c1m2.out
+	size c1m2.out
 
 
-.PHONY : compile-all
-	compile-all : $(SOURCES)
-		$(CC) $(SOURCES) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -c
+.PHONY: compile-all
+compile-all : $(SOURCES)
+	$(CC) $(SOURCES) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -c
 
 
-.PHONY : clean
-	clean : 
-		rm -f *.o *.asm *.i *.d *.map *.out
+.PHONY: clean
+clean : 
+	rm -f *.o *.asm *.i *.d *.map *.out
