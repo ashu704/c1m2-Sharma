@@ -38,8 +38,7 @@ endif
 ifeq ($(PLATFORM),MSP432)
 	CC = arm-none-eabi-gcc
 	LDFLAGS = -Wl,-Map=c1m2.map $(INCLUDES) -T $(LINKER_FILE)
-	CFLAGS = -Wall -Werror -g -O0 -std=c99 -mcpu=$(CPU) -mthumb -march=$(ARCH) -mfloat-abi=hard\
-	-mfpu=fpv4-sp-d16 --specs=$(SPECS)
+	CFLAGS = -Wall -Werror -g -O0 -std=c99 -mcpu=$(CPU) -mthumb -march=$(ARCH) -mfloat-abi=hard -mfpu=fpv4-sp-d16 --specs=$(SPECS)
 	CPPFLAGS = -DMSP432 
 endif
 
@@ -49,6 +48,11 @@ ifeq ($(PLATFORM),HOST)
 	CFLAGS = -Wall -Werror -g -O0 -std=c99 
 	CPPFLAGS = -DHOST
 endif
+
+OBJS = $(SOURCES:.c=.o)
+ASMS = $(SOURCES:.c=.asm)
+IMPS = $(SOURCES:.c=.i)
+DEPS = $(SOURCES:.c=.d)
 
 %.o : %.c 
 	$(CC) $(SOURCES) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -C $< -O $@
@@ -75,4 +79,4 @@ compile-all : $(SOURCES)
 
 .PHONY: clean
 clean : 
-	rm -f *.o *.asm *.i *.d *.map *.out
+	rm -f $(OBJS) $(ASMS) $(IMPS) $(DEPS) *.map *.out
